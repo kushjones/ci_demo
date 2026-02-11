@@ -1,0 +1,22 @@
+name: CD
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build_artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Make zip artifact
+        run: |
+          mkdir -p dist
+          zip -r dist/source.zip src tests requirements.txt .github/workflows
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-zip
+          path: dist/source.zip
